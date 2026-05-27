@@ -2,9 +2,6 @@
 use std::io::{self, Write};
 
 fn main() {
-    // TODO: Uncomment the code below to pass the first stage
-   
-
     loop {
         print!("$ ");
         io::stdout().flush().unwrap();
@@ -13,10 +10,22 @@ fn main() {
         io::stdin().read_line(&mut command).unwrap();
         command = command.trim().to_string();
 
-        if command == "exit"{
+        if command == "exit" {
             break;
         }
-        println!("{}: command not found", command.trim());
+        else if command.starts_with("echo") {
+            println!("{}", &command[5..]);
+        }
+        else if command.starts_with("type") {
+            let param = &command[5..];
+            if param == "echo" || param == "exit" || param == "type" {
+                println!("{} is a shell builtin", param);
+            } else {
+                println!("{}: not found", param);
+            }
+        }
+        else {
+            println!("{}: command not found", command);
+        }  
     }
-    
 }
